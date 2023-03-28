@@ -1,0 +1,7 @@
+package grad.Binh.AppointmentManage.controller;
+
+import org.springframework.stereotype.Controller;
+
+@Controller
+public class WorkController {
+}
