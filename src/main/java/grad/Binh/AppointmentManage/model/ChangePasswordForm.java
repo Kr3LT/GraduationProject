@@ -29,4 +29,8 @@ public class ChangePasswordForm {
     private String matchingPassword;
 
     private String currentPassword;
+
+    public ChangePasswordForm(int id) {
+        this.id = id;
+    }
 }

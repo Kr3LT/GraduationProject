@@ -1,64 +1,91 @@
 package grad.Binh.AppointmentManage.service.implement;
 
 import grad.Binh.AppointmentManage.entity.Work;
+import grad.Binh.AppointmentManage.entity.user.customer.Customer;
+import grad.Binh.AppointmentManage.exception.WorkNotFoundException;
+import grad.Binh.AppointmentManage.repository.WorkRepository;
+import grad.Binh.AppointmentManage.service.UserService;
 import grad.Binh.AppointmentManage.service.WorkService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
 public class WorkServiceImpl implements WorkService {
-    @Override
-    public void createNewWork(Work work) {
+    private final WorkRepository workRepository;
+    private final UserService userService;
 
+    public WorkServiceImpl(WorkRepository workRepository, UserService userService) {
+        this.workRepository = workRepository;
+        this.userService = userService;
+    }
+
+    @Override
+    @PreAuthorize("hasRole('ADMIN')")
+    public void createNewWork(Work work) {
+        workRepository.save(work);
+    }
+
+    @Override
+    @PreAuthorize("hasRole('ADMIN')")
+    public void updateWork(Work workUpdateData) {
+        Work work = getWorkById(workUpdateData.getId());
+        work.setName(workUpdateData.getName());
+        work.setPrice(workUpdateData.getPrice());
+        work.setDuration(workUpdateData.getDuration());
+        work.setDescription(workUpdateData.getDescription());
+        work.setEditable(workUpdateData.isEditable());
+        work.setTargetCustomer(workUpdateData.getTargetCustomer());
+        workRepository.save(work);
     }
 
     @Override
     public Work getWorkById(int workId) {
-        return null;
+        return workRepository.findById(workId).orElseThrow(WorkNotFoundException::new);
     }
 
     @Override
     public List<Work> getAllWorks() {
-        return null;
+        return workRepository.findAll();
     }
 
     @Override
-    public List<Work> getWorksByProviderId(int providerId) {
-        return null;
-    }
-
-    @Override
-    public List<Work> getRetailCustomerWorks() {
-        return null;
-    }
-
-    @Override
-    public List<Work> getCorporateCustomerWorks() {
-        return null;
-    }
-
-    @Override
-    public List<Work> getWorksForRetailCustomerByProviderId(int providerId) {
-        return null;
-    }
-
-    @Override
-    public List<Work> getWorksForCorporateCustomerByProviderId(int providerId) {
-        return null;
-    }
-
-    @Override
-    public void updateWork(Work work) {
-
-    }
-
-    @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteWorkById(int workId) {
-
+        workRepository.deleteById(workId);
     }
 
     @Override
     public boolean isWorkForCustomer(int workId, int customerId) {
-        return false;
+        Customer customer = userService.getCustomerById(customerId);
+        Work work = getWorkById(workId);
+        if (customer.hasRole("ROLE_CUSTOMER_RETAIL") && !work.getTargetCustomer().equals("retail")) {
+            return false;
+        } else return !customer.hasRole("ROLE_CUSTOMER_CORPORATE") || work.getTargetCustomer().equals("corporate");
+    }
+
+    @Override
+    public List<Work> getWorksByProviderId(int providerId) {
+        return workRepository.findByProviderId(providerId);
+    }
+
+    @Override
+    public List<Work> getRetailCustomerWorks() {
+        return workRepository.findByTargetCustomer("retail");
+    }
+
+    @Override
+    public List<Work> getCorporateCustomerWorks() {
+        return workRepository.findByTargetCustomer("corporate");
+    }
+
+    @Override
+    public List<Work> getWorksForRetailCustomerByProviderId(int providerId) {
+        return workRepository.findByTargetCustomerAndProviderId("retail", providerId);
+    }
+
+    @Override
+    public List<Work> getWorksForCorporateCustomerByProviderId(int providerId) {
+        return workRepository.findByTargetCustomerAndProviderId("corporate", providerId);
     }
 }

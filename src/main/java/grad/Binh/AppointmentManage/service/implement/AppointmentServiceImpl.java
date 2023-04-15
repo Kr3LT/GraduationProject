@@ -161,16 +161,16 @@ public class AppointmentServiceImpl implements AppointmentService {
         List<TimePeriod> toAdd = new ArrayList<>();
         Collections.sort(appointments);
         for (Appointment appointment : appointments) {
-            for (TimePeriod peroid : peroids) {
-                if ((appointment.getStart().toLocalTime().isBefore(peroid.getStart()) || appointment.getStart().toLocalTime().equals(peroid.getStart())) && appointment.getEnd().toLocalTime().isAfter(peroid.getStart()) && appointment.getEnd().toLocalTime().isBefore(peroid.getEnd())) {
-                    peroid.setStart(appointment.getEnd().toLocalTime());
+            for (TimePeriod period : peroids) {
+                if ((appointment.getStart().toLocalTime().isBefore(period.getStart()) || appointment.getStart().toLocalTime().equals(period.getStart())) && appointment.getEnd().toLocalTime().isAfter(period.getStart()) && appointment.getEnd().toLocalTime().isBefore(period.getEnd())) {
+                    period.setStart(appointment.getEnd().toLocalTime());
                 }
-                if (appointment.getStart().toLocalTime().isAfter(peroid.getStart()) && appointment.getStart().toLocalTime().isBefore(peroid.getEnd()) && appointment.getEnd().toLocalTime().isAfter(peroid.getEnd()) || appointment.getEnd().toLocalTime().equals(peroid.getEnd())) {
-                    peroid.setEnd(appointment.getStart().toLocalTime());
+                if (appointment.getStart().toLocalTime().isAfter(period.getStart()) && appointment.getStart().toLocalTime().isBefore(period.getEnd()) && appointment.getEnd().toLocalTime().isAfter(period.getEnd()) || appointment.getEnd().toLocalTime().equals(period.getEnd())) {
+                    period.setEnd(appointment.getStart().toLocalTime());
                 }
-                if (appointment.getStart().toLocalTime().isAfter(peroid.getStart()) && appointment.getEnd().toLocalTime().isBefore(peroid.getEnd())) {
-                    toAdd.add(new TimePeriod(peroid.getStart(), appointment.getStart().toLocalTime()));
-                    peroid.setStart(appointment.getEnd().toLocalTime());
+                if (appointment.getStart().toLocalTime().isAfter(period.getStart()) && appointment.getEnd().toLocalTime().isBefore(period.getEnd())) {
+                    toAdd.add(new TimePeriod(period.getStart(), appointment.getStart().toLocalTime()));
+                    period.setStart(appointment.getEnd().toLocalTime());
                 }
             }
         }
@@ -331,7 +331,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         if (appointment.getCustomer().equals(user)) {
             if (!appointment.getStatus().equals(AppointmentStatus.SCHEDULED)) {
-                return "Only appoinmtents with scheduled status can be cancelled.";
+                return "Only appointments with scheduled status can be cancelled.";
             } else if (LocalDateTime.now().plusDays(1).isAfter(appointment.getStart())) {
                 return "Appointments which will be in less than 24 hours cannot be canceled.";
             } else if (!appointment.getWork().isEditable()) {
@@ -361,8 +361,8 @@ public class AppointmentServiceImpl implements AppointmentService {
             return false;
         }
         Work work = workService.getWorkById(workId);
-        TimePeriod timePeroid = new TimePeriod(start.toLocalTime(), start.toLocalTime().plusMinutes(work.getDuration()));
-        return getAvailableHours(providerId, customerId, workId, start.toLocalDate()).contains(timePeroid);
+        TimePeriod timePeriod = new TimePeriod(start.toLocalTime(), start.toLocalTime().plusMinutes(work.getDuration()));
+        return getAvailableHours(providerId, customerId, workId, start.toLocalDate()).contains(timePeriod);
     }
 
     @Override

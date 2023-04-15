@@ -1,6 +1,8 @@
 package grad.Binh.AppointmentManage.utils;
 
 import grad.Binh.AppointmentManage.entity.Invoice;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 import org.xhtmlrenderer.pdf.ITextRenderer;
@@ -9,12 +11,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.UUID;
-
+@Component
 public class PdfGeneratorUtils {
     private final SpringTemplateEngine templateEngine;
     private final String baseUrl;
 
-    public PdfGeneratorUtils(SpringTemplateEngine templateEngine, String baseUrl){
+    public PdfGeneratorUtils(SpringTemplateEngine templateEngine, @Value("${base.url}") String baseUrl){
         this.templateEngine = templateEngine;
         this.baseUrl = baseUrl;
     }

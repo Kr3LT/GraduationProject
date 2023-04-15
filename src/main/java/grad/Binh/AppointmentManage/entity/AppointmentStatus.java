@@ -1,5 +1,6 @@
 package grad.Binh.AppointmentManage.entity;
 
+
 public enum AppointmentStatus{
     SCHEDULED,
     FINISHED,

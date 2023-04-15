@@ -37,4 +37,5 @@ public class Work extends BaseEntity{
     @ManyToMany
     @JoinTable(name = "works_providers", joinColumns = @JoinColumn(name = "id_work"), inverseJoinColumns = @JoinColumn(name = "id_user"))
     private List<User> providers;
+
 }
