@@ -41,7 +41,7 @@ public class ProviderController {
     @GetMapping("/all")
     public String showAllProviders(Model model) {
         model.addAttribute("providers", userService.getAllProviders());
-        return "users/listProviders";
+        return "users/userListProvider";
     }
 
     @GetMapping("/{id}")
@@ -59,7 +59,7 @@ public class ProviderController {
             model.addAttribute("allWorks", workService.getAllWorks());
             model.addAttribute("numberOfScheduledAppointments", appointmentService.getNumberOfScheduledAppointmentsForUser(providerId));
             model.addAttribute("numberOfCanceledAppointments", appointmentService.getNumberOfCanceledAppointmentsForUser(providerId));
-            return "users/updateUserForm";
+            return "users/userUpdateForm";
 
         } else {
             throw new org.springframework.security.access.AccessDeniedException("Unauthorized");
@@ -83,7 +83,7 @@ public class ProviderController {
         model.addAttribute("account_type", "provider");
         model.addAttribute("registerAction", "/providers/new");
         model.addAttribute("allWorks", workService.getAllWorks());
-        return "users/createUserForm";
+        return "users/userCreateForm";
     }
 
     @PostMapping("/new")
@@ -107,7 +107,7 @@ public class ProviderController {
     public String showProviderAvailability(Model model, @AuthenticationPrincipal CustomUserDetails currentUser) {
         model.addAttribute("plan", workingPlanService.getWorkingPlanByProviderId(currentUser.getId()));
         model.addAttribute("breakModel", new TimePeriod());
-        return "users/showOrUpdateProviderAvailability";
+        return "users/userProviderAvailable";
     }
 
     @PostMapping("/availability")

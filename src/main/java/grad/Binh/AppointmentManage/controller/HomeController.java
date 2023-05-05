@@ -26,11 +26,11 @@ public class HomeController {
         if (currentUser != null) {
             return "redirect:/";
         }
-        return "users/login";
+        return "users/userLogin";
     }
 
     @GetMapping("/access-denied")
     public String showAccessDeniedPage() {
-        return "access-denied";
+        return "accessDenied";
     }
 }

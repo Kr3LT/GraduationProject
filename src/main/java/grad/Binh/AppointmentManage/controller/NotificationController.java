@@ -26,7 +26,7 @@ public class NotificationController {
     @GetMapping()
     public String showUserNotificationList(Model model, @AuthenticationPrincipal CustomUserDetails currentUser) {
         model.addAttribute("notifications", userService.getUserById(currentUser.getId()).getNotifications());
-        return "notifications/listNotifications";
+        return "notifications/notificationList";
     }
 
     @GetMapping("/{notificationId}")

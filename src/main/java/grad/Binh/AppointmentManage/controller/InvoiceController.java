@@ -33,7 +33,7 @@ public class InvoiceController {
     @GetMapping("/all")
     public String showAllInvoices(Model model) {
         model.addAttribute("invoices", invoiceService.getAllInvoices());
-        return "invoices/listInvoices";
+        return "invoices/invoiceList";
     }
 
     @PostMapping("/paid/{invoiceId}")

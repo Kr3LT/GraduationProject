@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @Controller
 @RequestMapping("/appointments")
 public class AppointmentController {
-    private static final String REJECTION_CONFIRMATION_VIEW = "appointments/rejectionConfirmation";
+    private static final String REJECTION_CONFIRMATION_VIEW = "appointments/appointmentRejectionConfirm";
 
     private final WorkService workService;
     private final UserService userService;
@@ -43,7 +43,7 @@ public class AppointmentController {
         } else if (currentUser.hasRole("ROLE_ADMIN")) {
             model.addAttribute(appointmentsModelName, appointmentService.getAllAppointments());
         }
-        return "appointments/listAppointments";
+        return "appointments/appointmentList";
     }
 
     @GetMapping("/{id}")
@@ -113,7 +113,7 @@ public class AppointmentController {
         } else if (currentUser.hasRole("ROLE_CUSTOMER_CORPORATE")) {
             model.addAttribute("providers", userService.getProvidersWithCorporateWorks());
         }
-        return "appointments/selectProvider";
+        return "appointments/appointmentProviderSelect";
     }
 
     @GetMapping("/new/{providerId}")
@@ -124,7 +124,7 @@ public class AppointmentController {
             model.addAttribute("works", workService.getWorksForCorporateCustomerByProviderId(providerId));
         }
         model.addAttribute(providerId);
-        return "appointments/selectService";
+        return "appointments/appointmentServiceSelect";
     }
 
     @GetMapping("/new/{providerId}/{workId}")
@@ -132,7 +132,7 @@ public class AppointmentController {
         if (workService.isWorkForCustomer(workId, currentUser.getId())) {
             model.addAttribute(providerId);
             model.addAttribute("workId", workId);
-            return "appointments/selectDate";
+            return "appointments/appointmentDateSelect";
         } else {
             return "redirect:/appointments/new";
         }
@@ -147,7 +147,7 @@ public class AppointmentController {
             model.addAttribute(providerId);
             model.addAttribute("start", LocalDateTime.parse(start));
             model.addAttribute("end", LocalDateTime.parse(start).plusMinutes(workService.getWorkById(workId).getDuration()));
-            return "appointments/newAppointmentSummary";
+            return "appointments/appointmentCreateSummary";
         } else {
             return "redirect:/appointments/new";
         }

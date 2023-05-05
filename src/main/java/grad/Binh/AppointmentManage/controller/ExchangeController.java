@@ -28,7 +28,7 @@ public class ExchangeController {
         model.addAttribute("appointmentId", oldAppointmentId);
         model.addAttribute("numberOfEligibleAppointments", eligibleAppointments.size());
         model.addAttribute("eligibleAppointments", eligibleAppointments);
-        return "exchange/listProposals";
+        return "exchange/exchangeProposalsList";
     }
 
     @GetMapping("/{oldAppointmentId}/{newAppointmentId}")
@@ -51,7 +51,7 @@ public class ExchangeController {
         } else {
             model.addAttribute("message", "Error! Exchange not sent!");
         }
-        return "exchange/requestConfirmation";
+        return "exchange/exchangeRequestConfirmation";
     }
 
     @PostMapping("/accept")

@@ -25,6 +25,11 @@ public class CustomerController {
     private final UserService userService;
     private final AppointmentService appointmentService;
 
+    private final String USER_CREATE_FORM = "users/userCreateForm";
+
+    private final String ACCOUNT_TYPE = "account_type";
+
+
     public CustomerController(UserService userService, AppointmentService appointmentService) {
         this.userService = userService;
         this.appointmentService = appointmentService;
@@ -33,7 +38,7 @@ public class CustomerController {
     @GetMapping("/all")
     public String showAllCustomers(Model model) {
         model.addAttribute("customers", userService.getAllCustomers());
-        return "users/listCustomers";
+        return "users/userListCustomer";
     }
 
     @GetMapping("/{id}")
@@ -43,13 +48,13 @@ public class CustomerController {
             if (!model.containsAttribute("user")) {
                 model.addAttribute("user", new UserForm(userService.getCorporateCustomerById(id)));
             }
-            model.addAttribute("account_type", "customer_corporate");
+            model.addAttribute(ACCOUNT_TYPE, "customer_corporate");
             model.addAttribute("formActionProfile", "/customers/corporate/update/profile");
         } else if (customer.hasRole("ROLE_CUSTOMER_RETAIL")) {
             if (!model.containsAttribute("user")) {
                 model.addAttribute("user", new UserForm(userService.getRetailCustomerById(id)));
             }
-            model.addAttribute("account_type", "customer_retail");
+            model.addAttribute(ACCOUNT_TYPE, "customer_retail");
             model.addAttribute("formActionProfile", "/customers/retail/update/profile");
         }
         if (!model.containsAttribute("passwordChange")) {
@@ -58,7 +63,7 @@ public class CustomerController {
         model.addAttribute("formActionPassword", "/customers/update/password");
         model.addAttribute("numberOfScheduledAppointments", appointmentService.getNumberOfScheduledAppointmentsForUser(id));
         model.addAttribute("numberOfCanceledAppointments", appointmentService.getNumberOfCanceledAppointmentsForUser(id));
-        return "users/updateUserForm";
+        return "users/userUpdateForm";
     }
 
     @PostMapping("/corporate/update/profile")
@@ -90,16 +95,16 @@ public class CustomerController {
             return "redirect:/";
         }
         if (customerType.equals("corporate")) {
-            model.addAttribute("account_type", "customer_corporate");
+            model.addAttribute(ACCOUNT_TYPE, "customer_corporate");
             model.addAttribute("registerAction", "/customers/new/corporate");
         } else if (customerType.equals("retail")) {
-            model.addAttribute("account_type", "customer_retail");
+            model.addAttribute(ACCOUNT_TYPE, "customer_retail");
             model.addAttribute("registerAction", "/customers/new/retail");
         } else {
             throw new RuntimeException();
         }
         model.addAttribute("user", new UserForm());
-        return "users/createUserForm";
+        return USER_CREATE_FORM;
     }
 
 
@@ -107,22 +112,22 @@ public class CustomerController {
     public String processReatilCustomerRegistration(@Validated({CreateUser.class}) @ModelAttribute("user") UserForm userForm, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             populateModel(model, userForm, "customer_retail", "/customers/new/retail", null);
-            return "users/createUserForm";
+            return USER_CREATE_FORM;
         }
         userService.saveNewRetailCustomer(userForm);
         model.addAttribute("createdUserName", userForm.getUserName());
-        return "users/login";
+        return "users/userLogin";
     }
 
     @PostMapping("/new/corporate")
     public String processCorporateCustomerRegistration(@Validated({CreateUser.class, CreateCorporateCustomer.class}) @ModelAttribute("user") UserForm userForm, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             populateModel(model, userForm, "customer_corporate", "/customers/new/corporate", null);
-            return "users/createUserForm";
+            return USER_CREATE_FORM;
         }
         userService.saveNewCorporateCustomer(userForm);
         model.addAttribute("createdUserName", userForm.getUserName());
-        return "users/login";
+        return "users/userLogin";
     }
 
 
@@ -145,7 +150,7 @@ public class CustomerController {
 
     public Model populateModel(Model model, UserForm user, String account_type, String action, String error) {
         model.addAttribute("user", user);
-        model.addAttribute("account_type", account_type);
+        model.addAttribute(ACCOUNT_TYPE, account_type);
         model.addAttribute("registerAction", action);
         model.addAttribute("registrationError", error);
         return model;

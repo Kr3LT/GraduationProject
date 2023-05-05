@@ -18,19 +18,19 @@ public class WorkController {
     @GetMapping("/all")
     public String showAllWorks(Model model) {
         model.addAttribute("works", workService.getAllWorks());
-        return "works/list";
+        return "works/workList";
     }
 
     @GetMapping("/{workId}")
     public String showFormForUpdateWork(@PathVariable("workId") int workId, Model model) {
         model.addAttribute("work", workService.getWorkById(workId));
-        return "works/createOrUpdateWorkForm";
+        return "works/workCreateOrUpdateForm";
     }
 
     @GetMapping("/new")
     public String showFormForAddWork(Model model) {
         model.addAttribute("work", new Work());
-        return "works/createOrUpdateWorkForm";
+        return "works/workCreateOrUpdateForm";
     }
 
     @PostMapping("/new")
