@@ -2,8 +2,8 @@ package grad.Binh.AppointmentManage.controller;
 
 import com.google.common.collect.Lists;
 import grad.Binh.AppointmentManage.Enum.RoleEnum;
-import grad.Binh.AppointmentManage.entity.Appointment;
 import grad.Binh.AppointmentManage.configuration.security.CustomUserDetails;
+import grad.Binh.AppointmentManage.entity.Appointment;
 import grad.Binh.AppointmentManage.model.AppointmentRegisterForm;
 import grad.Binh.AppointmentManage.service.AppointmentService;
 import grad.Binh.AppointmentManage.service.NotificationService;

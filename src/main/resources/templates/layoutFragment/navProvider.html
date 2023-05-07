@@ -14,7 +14,7 @@
            th:classappend="${activeLink} == 'availability' ? 'active':''">Availability</a>
       </li>
       <li class="nav-item" th:classappend="${activeLink} == 'account' ? 'active':''">
-        <a class="nav-link" th:href="@{'/providers/' + ${#authentication.principal.id}}">My account</a>
+        <a class="nav-link" th:href="@{'/providers/' + ${#authentication?.principal?.id}}">My account</a>
       </li>
     </ul>
   </div>

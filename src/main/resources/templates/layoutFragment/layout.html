@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html th:fragment="layout (content, activeLink, pageTitle)" xmlns:th="http://www.w3.org/1999/html">
+<html th:fragment="layout (content, activeLink, pageTitle)" xmlns="http://www.w3.org/1999/html" xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
   <meta charset="utf-8">
@@ -9,13 +9,13 @@
   <!-- Appointment Chat CSS -->
   <link rel="stylesheet" th:href="@{/css/vendor/chat.css}"/>
   <!-- Bootstrap core CSS -->
-  <link rel="stylesheet" href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css"/>
+  <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.3/css/bootstrap.min.css}"/>
   <!-- Fullcalendar CSS -->
   <link rel="stylesheet" th:href="@{/css/vendor/fullcalendar.css}"/>
   <!-- Site CSS -->
   <link rel="stylesheet" th:href="@{/css/style.css}"/>
   <!--DataTables CSS-->
-  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+  <link rel="stylesheet" type="text/css" th:href="@{https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css}">
 
   <link rel="stylesheet" th:href="@{/css/vendor/bootstrap-notifications.css}"/>
 
@@ -24,16 +24,16 @@
   <script src="https://kit.fontawesome.com/56438f342e.js"></script>
 
   <!--jQuery-->
-  <script src="/webjars/jquery/3.3.1-2/jquery.min.js"></script>
+  <script th:src="@{/webjars/jquery/3.6.3/jquery.min.js}"></script>
   <!-- Bootstrap core JavaScript -->
-  <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script th:src="@{/webjars/bootstrap/5.2.3/js/bootstrap.min.js}"></script>
   <!--Moment-->
   <script type="text/javascript" th:src="@{/js/vendor/moment.js}"></script>
   <!--FullCalendar-->
   <script type="text/javascript" th:src="@{/js/vendor/fullcalendar.js}"></script>
   <!--DataTables-->
   <script type="text/javascript" charset="utf8"
-          src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+          th:src="@{https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js}"></script>
 
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-137823705-3"></script>
@@ -60,17 +60,17 @@
 
       <th:block sec:authorize="hasRole('ROLE_CUSTOMER')">
         <!-- menu for customer-->
-        <div th:replace="fragments/customer-nav.html :: navlinks(${activeLink})"></div>
+        <div th:replace="~{layoutFragment/navCustomer.html :: navlinks(${activeLink})}"></div>
       </th:block>
 
       <th:block sec:authorize="hasRole('ROLE_PROVIDER')">
         <!-- menu for provider-->
-        <div th:replace="fragments/provider-nav.html :: navlinks(${activeLink})"></div>
+        <div th:replace="~{layoutFragment/navProvider.html :: navlinks(${activeLink})}"></div>
       </th:block>
 
       <th:block sec:authorize="hasRole('ROLE_ADMIN')">
         <!-- menu for admin-->
-        <div th:replace="fragments/admin-nav.html :: navlinks(${activeLink})"></div>
+        <div th:replace="~{layoutFragment/navAdmin.html :: navlinks(${activeLink})}"></div>
       </th:block>
       <!--notifications-->
 
@@ -103,9 +103,9 @@
 
 <!-- Page Content -->
 <div class="container">
-  <th:block th:include="${content}"/>
+  <th:block th:insert="${content}"/>
   <div class="row align-items-center justify-content-center" style="margin-top: 50px">
-    <p>AppointmentScheduler v<span th:text="${currentVersion}">1.0</span></p>
+    <p>Appointment Management<span th:text="${currentVersion}">1.0</span></p>
   </div>
 </div>
 

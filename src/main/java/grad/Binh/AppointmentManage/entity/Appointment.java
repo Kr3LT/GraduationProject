@@ -1,8 +1,10 @@
 package grad.Binh.AppointmentManage.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import grad.Binh.AppointmentManage.entity.user.User;
 import grad.Binh.AppointmentManage.entity.user.customer.Customer;
 import grad.Binh.AppointmentManage.entity.user.provider.Provider;
+import grad.Binh.AppointmentManage.model.AppointmentSerializer;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,13 +21,14 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
+@JsonSerialize(using = AppointmentSerializer.class)
 public class Appointment extends BaseEntity implements Comparable<Appointment>{
-    @Column(name = "start")
+    @Column(name = "start_date")
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime start;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
-    @Column(name = "end")
+    @Column(name = "end_date")
     private LocalDateTime end;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")

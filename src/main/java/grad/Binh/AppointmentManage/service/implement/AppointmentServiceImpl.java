@@ -102,9 +102,9 @@ public class AppointmentServiceImpl implements AppointmentService {
         List<Appointment> customerAppointments = getAppointmentsByCustomerAtDay(customerId, date);
 
         List<TimePeriod> availablePeroids = selectedDay.getTimePeriodsWithBreaksExcluded();
-        availablePeroids = excludeAppointmentsFromTimePeroids(availablePeroids, providerAppointments);
+        availablePeroids = excludeAppointmentsFromTimePeriods(availablePeroids, providerAppointments);
 
-        availablePeroids = excludeAppointmentsFromTimePeroids(availablePeroids, customerAppointments);
+        availablePeroids = excludeAppointmentsFromTimePeriods(availablePeroids, customerAppointments);
         return calculateAvailableHours(availablePeroids, workService.getWorkById(workId));
     }
 
@@ -142,9 +142,9 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public List<TimePeriod> calculateAvailableHours(List<TimePeriod> availableTimePeroids, Work work) {
+    public List<TimePeriod> calculateAvailableHours(List<TimePeriod> availableTimePeriods, Work work) {
         ArrayList<TimePeriod> availableHours = new ArrayList<>();
-        for (TimePeriod period : availableTimePeroids) {
+        for (TimePeriod period : availableTimePeriods) {
             TimePeriod workPeriod = new TimePeriod(period.getStart(), period.getStart().plusMinutes(work.getDuration()));
             while (workPeriod.getEnd().isBefore(period.getEnd()) || workPeriod.getEnd().equals(period.getEnd())) {
                 availableHours.add(new TimePeriod(workPeriod.getStart(), workPeriod.getStart().plusMinutes(work.getDuration())));
@@ -156,12 +156,12 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public List<TimePeriod> excludeAppointmentsFromTimePeroids(List<TimePeriod> peroids, List<Appointment> appointments) {
+    public List<TimePeriod> excludeAppointmentsFromTimePeriods(List<TimePeriod> periods, List<Appointment> appointments) {
 
         List<TimePeriod> toAdd = new ArrayList<>();
         Collections.sort(appointments);
         for (Appointment appointment : appointments) {
-            for (TimePeriod period : peroids) {
+            for (TimePeriod period : periods) {
                 if ((appointment.getStart().toLocalTime().isBefore(period.getStart()) || appointment.getStart().toLocalTime().equals(period.getStart())) && appointment.getEnd().toLocalTime().isAfter(period.getStart()) && appointment.getEnd().toLocalTime().isBefore(period.getEnd())) {
                     period.setStart(appointment.getEnd().toLocalTime());
                 }
@@ -174,9 +174,9 @@ public class AppointmentServiceImpl implements AppointmentService {
                 }
             }
         }
-        peroids.addAll(toAdd);
-        Collections.sort(peroids);
-        return peroids;
+        periods.addAll(toAdd);
+        Collections.sort(periods);
+        return periods;
     }
 
     @Override

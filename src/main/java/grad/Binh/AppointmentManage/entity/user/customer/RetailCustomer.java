@@ -5,7 +5,6 @@ import grad.Binh.AppointmentManage.model.UserForm;
 import jakarta.persistence.Entity;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import java.util.Collection;

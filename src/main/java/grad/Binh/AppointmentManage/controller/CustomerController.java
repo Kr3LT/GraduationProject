@@ -104,7 +104,7 @@ public class CustomerController {
             throw new RuntimeException();
         }
         model.addAttribute("user", new UserForm());
-        return USER_CREATE_FORM;
+        return "users/userCreateForm";
     }
 
 

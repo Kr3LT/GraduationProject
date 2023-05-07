@@ -42,9 +42,9 @@ public interface AppointmentService {
 
     List<TimePeriod> getAvailableHours(int providerId, int customerId, int workId, LocalDate date);
 
-    List<TimePeriod> calculateAvailableHours(List<TimePeriod> availableTimePeroids, Work work);
+    List<TimePeriod> calculateAvailableHours(List<TimePeriod> availableTimePeriods, Work work);
 
-    List<TimePeriod> excludeAppointmentsFromTimePeroids(List<TimePeriod> peroids, List<Appointment> appointments);
+    List<TimePeriod> excludeAppointmentsFromTimePeriods(List<TimePeriod> periods, List<Appointment> appointments);
 
     String getCancelNotAllowedReason(int userId, int appointmentId);
 
