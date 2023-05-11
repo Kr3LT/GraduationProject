@@ -38,7 +38,7 @@ public class AjaxController {
         }
         return Lists.newArrayList();
     }
-    @GetMapping("/availableHour/{providerId}/{workId}/{date}")
+    @GetMapping("/availableHours/{providerId}/{workId}/{date}")
     public List<AppointmentRegisterForm> getAvailableHour(@PathVariable("providerId") int providerId,
                                                           @PathVariable("workId") int workId,
                                                           @PathVariable("date") String date,
@@ -52,7 +52,7 @@ public class AjaxController {
                                 .start(timePeriod.getStart().atDate(localDate))
                                 .end(timePeriod.getEnd().atDate(localDate))
                                 .build())
-                .collect(Collectors.toList());
+                .toList();
     }
     @GetMapping("/user/notifications")
     public int getUnreadNotificationsCount(@AuthenticationPrincipal CustomUserDetails currentUser){

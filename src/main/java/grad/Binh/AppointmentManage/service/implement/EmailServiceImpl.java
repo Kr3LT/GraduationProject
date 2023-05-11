@@ -48,10 +48,9 @@ public class EmailServiceImpl implements EmailService {
                     MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
                     StandardCharsets.UTF_8.name());
 
-            String html = templateEngine.process("email/" + templateName, templateContext);
+            String html = templateEngine.process("emails/" + templateName, templateContext);
 
             helper.setTo(to);
-            helper.setFrom("appointmentscheduler@gmail.com");
             helper.setSubject(subject);
             helper.setText(html, true);
 
@@ -73,7 +72,7 @@ public class EmailServiceImpl implements EmailService {
         Context context = new Context();
         context.setVariable("appointment", appointment);
         context.setVariable("url", baseUrl + "/appointments/reject?token=" + jwtTokenService.generateAppointmentRejectionToken(appointment));
-        sendEmail(appointment.getCustomer().getEmail(), "Finished appointment summary", "appointmentFinished", context, null);
+        sendEmail(appointment.getCustomer().getEmail(), "Finished appointment summary", "emailAppointmentFinished", context, null);
     }
 
     @Async
@@ -82,7 +81,7 @@ public class EmailServiceImpl implements EmailService {
         Context context = new Context();
         context.setVariable("appointment", appointment);
         context.setVariable("url", baseUrl + "/appointments/acceptRejection?token=" + jwtTokenService.generateAcceptRejectionToken(appointment));
-        sendEmail(appointment.getProvider().getEmail(), "Rejection requested", "appointmentRejectionRequested", context, null);
+        sendEmail(appointment.getProvider().getEmail(), "Rejection requested", "emailAppointmentRequest", context, null);
     }
 
     @Async
@@ -90,7 +89,7 @@ public class EmailServiceImpl implements EmailService {
     public void sendNewAppointmentScheduledNotification(Appointment appointment) {
         Context context = new Context();
         context.setVariable("appointment", appointment);
-        sendEmail(appointment.getProvider().getEmail(), "New appointment booked", "newAppointmentScheduled", context, null);
+        sendEmail(appointment.getProvider().getEmail(), "New appointment booked", "emailAppointmentScheduled", context, null);
     }
 
     @Async
@@ -99,7 +98,7 @@ public class EmailServiceImpl implements EmailService {
         Context context = new Context();
         context.setVariable("appointment", appointment);
         context.setVariable("canceler", "customer");
-        sendEmail(appointment.getProvider().getEmail(), "Appointment canceled by Customer", "appointmentCanceled", context, null);
+        sendEmail(appointment.getProvider().getEmail(), "Appointment canceled by Customer", "emailAppointmentCanceled", context, null);
     }
 
     @Async
@@ -108,7 +107,7 @@ public class EmailServiceImpl implements EmailService {
         Context context = new Context();
         context.setVariable("appointment", appointment);
         context.setVariable("canceler", "provider");
-        sendEmail(appointment.getCustomer().getEmail(), "Appointment canceled by Provider", "appointmentCanceled", context, null);
+        sendEmail(appointment.getCustomer().getEmail(), "Appointment canceled by Provider", "emailAppointmentCanceled", context, null);
     }
 
     @Async
@@ -118,7 +117,7 @@ public class EmailServiceImpl implements EmailService {
         context.setVariable("customer", invoice.getAppointments().get(0).getCustomer().getFirstName() + " " + invoice.getAppointments().get(0).getCustomer().getLastName());
         try {
             File invoicePdf = pdfGenaratorUtil.generatePdfFromInvoice(invoice);
-            sendEmail(invoice.getAppointments().get(0).getCustomer().getEmail(), "Appointment invoice", "appointmentInvoice", context, invoicePdf);
+            sendEmail(invoice.getAppointments().get(0).getCustomer().getEmail(), "Appointment invoice", "emailAppointmentInvoice", context, invoicePdf);
         } catch (Exception e) {
             log.error("Error while generating pdf, error is {}", e.getLocalizedMessage());
         }
@@ -130,7 +129,7 @@ public class EmailServiceImpl implements EmailService {
     public void sendAppointmentRejectionAcceptedNotification(Appointment appointment) {
         Context context = new Context();
         context.setVariable("appointment", appointment);
-        sendEmail(appointment.getCustomer().getEmail(), "Rejection request accepted", "appointmentRejectionAccepted", context, null);
+        sendEmail(appointment.getCustomer().getEmail(), "Rejection request accepted", "emailAppointmentRejectOk", context, null);
     }
 
     @Async
@@ -141,7 +140,7 @@ public class EmailServiceImpl implements EmailService {
         context.setVariable("recipent", recipent);
         context.setVariable("appointment", chatMessage.getAppointment());
         context.setVariable("url", baseUrl + "/appointments/" + chatMessage.getAppointment().getId());
-        sendEmail(recipent.getEmail(), "New chat message", "newChatMessage", context, null);
+        sendEmail(recipent.getEmail(), "New chat message", "emailChatMessages", context, null);
     }
 
     @Async
@@ -151,7 +150,7 @@ public class EmailServiceImpl implements EmailService {
         context.setVariable("oldAppointment", oldAppointment);
         context.setVariable("newAppointment", newAppointment);
         context.setVariable("url", baseUrl + "/appointments/" + newAppointment.getId());
-        sendEmail(newAppointment.getCustomer().getEmail(), "New Appointment Exchange Request", "newExchangeRequest", context, null);
+        sendEmail(newAppointment.getCustomer().getEmail(), "New Appointment Exchange Request", "emailExchangeRequest", context, null);
     }
 
     @Override
@@ -159,7 +158,7 @@ public class EmailServiceImpl implements EmailService {
         Context context = new Context();
         context.setVariable("exchangeRequest", exchangeRequest);
         context.setVariable("url", baseUrl + "/appointments/" + exchangeRequest.getRequested().getId());
-        sendEmail(exchangeRequest.getRequested().getCustomer().getEmail(), "Exchange request accepted", "exchangeRequestAccepted", context, null);
+        sendEmail(exchangeRequest.getRequested().getCustomer().getEmail(), "Exchange request accepted", "emailExchangeRequestOk", context, null);
     }
 
     @Override
@@ -167,6 +166,6 @@ public class EmailServiceImpl implements EmailService {
         Context context = new Context();
         context.setVariable("exchangeRequest", exchangeRequest);
         context.setVariable("url", baseUrl + "/appointments/" + exchangeRequest.getRequestor().getId());
-        sendEmail(exchangeRequest.getRequestor().getCustomer().getEmail(), "Exchange request rejected", "exchangeRequestRejected", context, null);
+        sendEmail(exchangeRequest.getRequestor().getCustomer().getEmail(), "Exchange request rejected", "emailExchangeRequestRejected", context, null);
     }
 }

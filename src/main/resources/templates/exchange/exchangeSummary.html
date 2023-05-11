@@ -19,7 +19,7 @@
       <table id="appointments" class="table" width="500px">
 
         <tr>
-          <td><span th:text="${#temporals.format(oldAppointment.start, 'dd-MM-yyyy HH:mm')}">10-01-2019 12:40</span></td>
+          <td><span th:text="${#temporals.format(oldAppointment.start, 'dd-MM-yyyy HH:mm')}"></span></td>
           <td><span th:text="${oldAppointment.work.name}">english lesson</span></td>
           <td><span th:text="${oldAppointment.provider.firstName}">Name LastName</span></td>
 
@@ -31,7 +31,7 @@
         </tr>
 
         <tr>
-          <td><span th:text="${#temporals.format(newAppointment.start, 'dd-MM-yyyy HH:mm')}">10-01-2019 12:40</span></td>
+          <td><span th:text="${#temporals.format(newAppointment.start, 'dd-MM-yyyy HH:mm')}"></span></td>
           <td><span th:text="${newAppointment.work.name}">english lesson</span></td>
           <td><span th:text="${newAppointment.provider.firstName}">Name LastName</span></td>
 

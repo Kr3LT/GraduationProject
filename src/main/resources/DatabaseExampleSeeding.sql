@@ -43,7 +43,7 @@ VALUES (4, 4);
 
 INSERT INTO works (id, name, duration, price, editable, target, description)
 VALUES (1, 'English lesson', 60, 100.00, true, 'retail',
-        'This is english lesson with duration 60 minutes and price 100 pln');
+        'This is english lesson with duration 60 minutes and price 100000 VND');
 
 INSERT INTO works_providers
 VALUES (2, 1);

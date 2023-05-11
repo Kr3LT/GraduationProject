@@ -93,19 +93,22 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public List<TimePeriod> getAvailableHours(int providerId, int customerId, int workId, LocalDate date) {
+    public List<TimePeriod> getAvailableHours(int providerId, int customerId, int workId, LocalDate date){
         Provider p = userService.getProviderById(providerId);
         WorkingPlan workingPlan = p.getWorkingPlan();
         DayPlan selectedDay = workingPlan.getDay(date.getDayOfWeek().toString().toLowerCase());
 
         List<Appointment> providerAppointments = getAppointmentsByProviderAtDay(providerId, date);
         List<Appointment> customerAppointments = getAppointmentsByCustomerAtDay(customerId, date);
-
-        List<TimePeriod> availablePeroids = selectedDay.getTimePeriodsWithBreaksExcluded();
-        availablePeroids = excludeAppointmentsFromTimePeriods(availablePeroids, providerAppointments);
-
-        availablePeroids = excludeAppointmentsFromTimePeriods(availablePeroids, customerAppointments);
-        return calculateAvailableHours(availablePeroids, workService.getWorkById(workId));
+        try {
+            List<TimePeriod> availablePeroids = selectedDay.getTimePeriodsWithBreaksExcluded();
+            availablePeroids = excludeAppointmentsFromTimePeriods(availablePeroids, providerAppointments);
+            availablePeroids = excludeAppointmentsFromTimePeriods(availablePeroids, customerAppointments);
+            return calculateAvailableHours(availablePeroids, workService.getWorkById(workId));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
     }
 
     @Override

@@ -22,7 +22,7 @@ public class PdfGeneratorUtils {
     public File generatePdfFromInvoice(Invoice invoice){
         Context context = new Context();
         context.setVariable("invoice", invoice);
-        String processedHtml = templateEngine.process("email/pdf/invoice", context);
+        String processedHtml = templateEngine.process("emails/pdf/invoice", context);
 
         ITextRenderer renderer = new ITextRenderer();
         renderer.setDocumentFromString(processedHtml, baseUrl);

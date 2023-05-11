@@ -8,9 +8,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Configuration
 @EnableWebSecurity
+@EnableWebMvc
 public class WebSecurityConfig {
     private final CustomUserDetailService customUserDetailsService;
     private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
@@ -21,25 +23,30 @@ public class WebSecurityConfig {
         this.customAuthenticationSuccessHandler = customAuthenticationSuccessHandler;
         this.passwordEncoder = passwordEncoder;
     }
+    private String RoleCustomer = "CUSTOMER";
+    private String RoleProvider = "PROVIDER";
+    private String RoleAdmin = "ADMIN";
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable().authenticationProvider(authenticationProvider())
+//                  .authorizeHttpRequests().anyRequest().permitAll()
                 .authorizeHttpRequests()
-                .requestMatchers("/").hasAnyRole("CUSTOMER", "PROVIDER", "ADMIN")
-                .requestMatchers("/api/**").hasAnyRole("CUSTOMER", "PROVIDER", "ADMIN")
-                .requestMatchers("/customers/all").hasRole("ADMIN")
-                .requestMatchers("/providers/new").hasRole("ADMIN")
-                .requestMatchers("/invoices/all").hasRole("ADMIN")
-                .requestMatchers("/providers/all").hasRole("ADMIN")
-                .requestMatchers("/customers/**").hasAnyRole("CUSTOMER", "ADMIN")
-                .requestMatchers("/providers/availability/**").hasRole("PROVIDER")
-                .requestMatchers("/providers/**").hasAnyRole("PROVIDER", "ADMIN")
-                .requestMatchers("/works/**").hasRole("ADMIN")
-                .requestMatchers("/exchange/**").hasRole("CUSTOMER")
-                .requestMatchers("/appointments/new/**").hasRole("CUSTOMER")
-                .requestMatchers("/appointments/**").hasAnyRole("CUSTOMER", "PROVIDER", "ADMIN")
-                .requestMatchers("/invoices/**").hasAnyRole("CUSTOMER", "PROVIDER", "ADMIN")
+                .requestMatchers("/").hasAnyRole(RoleCustomer, RoleProvider, RoleAdmin)
+                .requestMatchers("/api/**").hasAnyRole(RoleCustomer, RoleProvider, RoleAdmin)
+                .requestMatchers("/customers/all").hasRole(RoleAdmin)
+                .requestMatchers("/providers/new").hasRole(RoleAdmin)
+                .requestMatchers("/invoices/all").hasRole(RoleAdmin)
+                .requestMatchers("/providers/all").hasRole(RoleAdmin)
+                .requestMatchers("/customers/**").hasAnyRole(RoleCustomer, RoleAdmin)
+                .requestMatchers("/providers/availability/**").hasRole(RoleProvider)
+                .requestMatchers("/providers/**").hasAnyRole(RoleProvider, RoleAdmin)
+                .requestMatchers("/works/**").hasRole(RoleAdmin)
+                .requestMatchers("/exchange/**").hasRole(RoleCustomer)
+                .requestMatchers("/appointments/new/**").hasRole(RoleCustomer)
+                .requestMatchers("/appointments/**").hasAnyRole(RoleCustomer, RoleProvider, RoleAdmin)
+                .requestMatchers("/invoices/**").hasAnyRole(RoleCustomer, RoleProvider, RoleAdmin)
+                .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")
@@ -63,7 +70,7 @@ public class WebSecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return web->  web.ignoring()
-                .requestMatchers("/css/**", "/js/**", "/img/**", "/lib/**", "/favicon.ico", "/webjars/**")
+                .requestMatchers("/css/**", "/js/**", "/img/**", "/lib/**", "favicon.ico", "/webjars/**")
                 .requestMatchers("/customers/new/**");
     }
 

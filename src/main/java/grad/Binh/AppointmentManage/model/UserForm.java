@@ -47,7 +47,7 @@ public class UserForm {
     @NotBlank(groups = {CreateUser.class, UpdateUser.class}, message = "Email cannot be empty")
     private String email;
 
-    @Pattern(groups = {CreateUser.class, UpdateUser.class}, regexp = "[0-9]{9}", message = "Please enter valid mobile phone")
+    @Pattern(groups = {CreateUser.class, UpdateUser.class}, regexp = "[0-9]{10}", message = "Please enter valid mobile phone")
     @NotBlank(groups = {CreateUser.class, UpdateUser.class}, message = "Mobile phone cannot be empty")
     private String mobile;
 
@@ -55,7 +55,7 @@ public class UserForm {
     @NotBlank(groups = {CreateUser.class, UpdateUser.class}, message = "Street cannot be empty")
     private String street;
 
-    @Pattern(groups = {CreateUser.class, UpdateUser.class}, regexp = "[0-9]{2}-[0-9]{3}", message = "Please enter valid postcode")
+    @Pattern(groups = {CreateUser.class, UpdateUser.class}, regexp = "[0-9]{5}", message = "Please enter valid postcode")
     @NotBlank(groups = {CreateUser.class, UpdateUser.class}, message = "Post code cannot be empty")
     private String postcode;
 
@@ -68,7 +68,7 @@ public class UserForm {
     @NotBlank(groups = {CreateCorporateCustomer.class, UpdateCorporateCustomer.class}, message = "Company cannot be empty")
     private String companyName;
 
-    @Pattern(groups = {CreateCorporateCustomer.class, UpdateCorporateCustomer.class}, regexp = "[0-9]{10}", message = "Please enter valid Polish VAT number")
+    @Pattern(groups = {CreateCorporateCustomer.class, UpdateCorporateCustomer.class}, regexp = "[0-9]{10}", message = "Please enter valid VAT number")
     @NotBlank(groups = {CreateCorporateCustomer.class, UpdateCorporateCustomer.class}, message = "VAT number cannot be empty")
     private String vatNumber;
 

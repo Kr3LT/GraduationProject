@@ -20,7 +20,7 @@ public class WorkingPlanServiceImpl implements WorkingPlanService {
     @Override
     @PreAuthorize("#updateData.provider.id == principal.id")
     public void updateWorkingPlan(WorkingPlan updateData) {
-        WorkingPlan workingPlan = workingPlanRepository.getOne(updateData.getId());
+        WorkingPlan workingPlan = workingPlanRepository.findById(updateData.getId()).orElseThrow();
         workingPlan.getMonday().setWorkingHours(updateData.getMonday().getWorkingHours());
         workingPlan.getTuesday().setWorkingHours(updateData.getTuesday().getWorkingHours());
         workingPlan.getWednesday().setWorkingHours(updateData.getWednesday().getWorkingHours());
@@ -34,7 +34,7 @@ public class WorkingPlanServiceImpl implements WorkingPlanService {
     @Override
     public void addBreakToWorkingPlan(TimePeriod breakToAdd, int planId, String dayOfWeek) {
         CustomUserDetails currentUser = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        WorkingPlan workingPlan = workingPlanRepository.getOne(planId);
+        WorkingPlan workingPlan = workingPlanRepository.findById(planId).orElseThrow();
         if (!workingPlan.getProvider().getId().equals(currentUser.getId())) {
             throw new org.springframework.security.access.AccessDeniedException("Unauthorized");
         }
@@ -45,7 +45,7 @@ public class WorkingPlanServiceImpl implements WorkingPlanService {
     @Override
     public void deleteBreakFromWorkingPlan(TimePeriod breakToDelete, int planId, String dayOfWeek) {
         CustomUserDetails currentUser = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        WorkingPlan workingPlan = workingPlanRepository.getOne(planId);
+        WorkingPlan workingPlan = workingPlanRepository.findById(planId).orElseThrow();
         if (!workingPlan.getProvider().getId().equals(currentUser.getId())) {
             throw new org.springframework.security.access.AccessDeniedException("Unauthorized");
         }

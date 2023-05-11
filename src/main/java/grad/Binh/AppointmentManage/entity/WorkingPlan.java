@@ -1,5 +1,6 @@
 package grad.Binh.AppointmentManage.entity;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import grad.Binh.AppointmentManage.entity.user.provider.Provider;
 import grad.Binh.AppointmentManage.model.DayPlan;
 import grad.Binh.AppointmentManage.model.TimePeriod;
@@ -84,8 +85,9 @@ public class WorkingPlan {
         WorkingPlan wp = new WorkingPlan();
         LocalTime defaultStartHour = LocalTime.parse("06:00");
         LocalTime defaultEndHour = LocalTime.parse("18:00");
-        TimePeriod defaultWorkingPeroid = new TimePeriod(defaultStartHour, defaultEndHour);
-        DayPlan defaultDayPlan = new DayPlan(defaultWorkingPeroid);
+        TimePeriod defaultWorkingPeriod = new TimePeriod(defaultStartHour, defaultEndHour);
+        DayPlan defaultDayPlan = new DayPlan();
+        defaultDayPlan.setWorkingHours(defaultWorkingPeriod);
         wp.setMonday(defaultDayPlan);
         wp.setTuesday(defaultDayPlan);
         wp.setWednesday(defaultDayPlan);
@@ -95,4 +97,6 @@ public class WorkingPlan {
         wp.setSunday(defaultDayPlan);
         return wp;
     }
+
+
 }

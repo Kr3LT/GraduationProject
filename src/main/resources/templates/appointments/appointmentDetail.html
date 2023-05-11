@@ -64,7 +64,7 @@
 
           <tr>
             <td><b>date</b></td>
-            <td><span th:text="${#temporals.format(appointment.start, 'dd-MM-yyyy')}">10-01-2019</span></td>
+            <td><span th:text="${#temporals.format(appointment.start, 'dd-MM-yyyy')}"></span></td>
           </tr>
           <tr>
             <td><b>time</b></td>
@@ -129,7 +129,7 @@
       </div>
       <div class="col-md-5">
 
-        <div class="chatbody">
+        <div class="chatbody" sec:authorize="hasAnyRole('ROLE_PROVIDER','ROLE_CUSTOMER')">
           <div class="panel panel-primary">
             <div class="panel-heading top-bar">
               <div class="col-md-8 col-xs-8">
@@ -145,7 +145,7 @@
               <div th:each="chatMessage : ${appointment.chatMessages}" class="row msg_container base_receive">
                 <div class="col-md-12 col-xs-12">
                   <div class="messages msg_receive">
-                    <p th:text="${chatMessage.message}">messae</p>
+                    <p th:text="${chatMessage.message}">message</p>
                     <time datetime="2009-11-13T20:00"><span
                             th:text="${chatMessage.author.firstName}">author</span> • <span
                             th:text="${#temporals.format(chatMessage.createdAt, 'dd-MM-yyyy HH:mm')}"></span></time>

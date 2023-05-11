@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -43,5 +44,24 @@ public class Provider extends User {
     public void update(UserForm updateData) {
         super.update(updateData);
         this.works = updateData.getWorks();
+    }
+    public List<Work> getCorporateWorks() {
+        List<Work> corporateWorks = new ArrayList<>();
+        for (Work w : works) {
+            if (w.getTargetCustomer().equals("corporate")) {
+                corporateWorks.add(w);
+            }
+        }
+        return corporateWorks;
+    }
+
+    public List<Work> getRetailWorks() {
+        List<Work> retailWorks = new ArrayList<>();
+        for (Work w : works) {
+            if (w.getTargetCustomer().equals("retail")) {
+                retailWorks.add(w);
+            }
+        }
+        return retailWorks;
     }
 }

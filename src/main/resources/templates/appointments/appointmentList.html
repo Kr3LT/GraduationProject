@@ -29,7 +29,7 @@
           th:classappend="${appointment.status.name() == 'CANCELED' || appointment.status.name()  == 'FINISHED' || appointment.status.name()  == 'INVOICED' || appointment.status.name()  == 'REJECTION_REQUESTED' || appointment.status.name()  == 'REJECTED'} ? table-secondary : table-success">
         <td><span th:text="${appointment.work.name}"> Work </span></td>
         <td><span th:text="${appointment.status}"> scheduled </span></td>
-        <td><span th:text="${#temporals.format(appointment.start, 'yyyy-MM-dd HH:mm')}"> 21-01-2019 15:00</span>
+        <td><span th:text="${#temporals.format(appointment.start, 'yyyy-MM-dd HH:mm')}"></span>
         </td>
         <td sec:authorize="!hasRole('ROLE_PROVIDER')"><span
                 th:text="${appointment.provider.firstName + ' ' + appointment.provider.lastName}">

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,23 +12,25 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 public class DayPlan {
     private TimePeriod workingHours;
     private List<TimePeriod> breaks;
 
+    public DayPlan() {
+        this.breaks = new ArrayList<>();
+    }
     public DayPlan(TimePeriod workingHours){
         this.workingHours = workingHours;
     }
 
-    public List<TimePeriod> getTimePeriodsWithBreaksExcluded() {
+    public List<TimePeriod> getTimePeriodsWithBreaksExcluded() throws Exception{
         ArrayList<TimePeriod> timePeriodsWithBreaksExcluded = new ArrayList<>();
         timePeriodsWithBreaksExcluded.add(getWorkingHours());
-        List<TimePeriod> breaks = getBreaks();
+        List<TimePeriod> breakList = getBreaks();
 
-        if (!breaks.isEmpty()) {
+        if (!breakList.isEmpty()) {
             ArrayList<TimePeriod> toAdd = new ArrayList();
-            for (TimePeriod break1 : breaks) {
+            for (TimePeriod break1 : breakList) {
                 if (break1.getStart().isBefore(workingHours.getStart())) {
                     break1.setStart(workingHours.getStart());
                 }
@@ -53,6 +56,14 @@ public class DayPlan {
 
 
         return timePeriodsWithBreaksExcluded;
+    }
+
+    public void removeBreak(TimePeriod breakToRemove) {
+        breaks.remove(breakToRemove);
+    }
+
+    public void addBreak(TimePeriod breakToAdd) {
+        breaks.add(breakToAdd);
     }
 
 }

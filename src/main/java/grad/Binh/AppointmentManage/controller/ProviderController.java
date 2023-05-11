@@ -105,6 +105,8 @@ public class ProviderController {
 
     @GetMapping("/availability")
     public String showProviderAvailability(Model model, @AuthenticationPrincipal CustomUserDetails currentUser) {
+        var plan = workingPlanService.getWorkingPlanByProviderId(currentUser.getId());
+        System.out.println(plan.getMonday().getWorkingHours().getStart());
         model.addAttribute("plan", workingPlanService.getWorkingPlanByProviderId(currentUser.getId()));
         model.addAttribute("breakModel", new TimePeriod());
         return "users/userProviderAvailable";

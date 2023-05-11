@@ -129,7 +129,7 @@
 
                     <div class="form-row">
                         <div class="form-group col-md-4">
-                            <label for="postcode">Postocode</label>
+                            <label for="postcode">Postcode</label>
                             <input type="text" class="form-control" th:classappend="${#fields.hasErrors('postcode') ? 'is-invalid' :''}" th:field="*{postcode}" placeholder="">
                             <div th:if="${#fields.hasErrors('postcode')}" class="invalid-feedback">
                                 <p th:errors="*{postcode}"></p>

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalTime;
 import java.util.Objects;
@@ -12,7 +13,9 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TimePeriod implements Comparable<TimePeriod>{
+    @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
     private LocalTime start;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
     private LocalTime end;
 
     @Override
