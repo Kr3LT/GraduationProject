@@ -42,12 +42,11 @@ public class ExchangeController {
 
         return "exchange/exchangeSummary";
     }
-
     @PostMapping()
     public String processExchangeRequest(@RequestParam("oldAppointmentId") int oldAppointmentId, @RequestParam("newAppointmentId") int newAppointmentId, Model model, @AuthenticationPrincipal CustomUserDetails currentUser) {
-        boolean result = exchangeService.requestExchange(oldAppointmentId, newAppointmentId, currentUser.getId());
+        boolean result = exchangeService.requestExchange(oldAppointmentId, newAppointmentId , currentUser.getId());
         if (result) {
-            model.addAttribute("message", "Exchange request sucsessfully sent!");
+            model.addAttribute("message", "Exchange request successfully sent!");
         } else {
             model.addAttribute("message", "Error! Exchange not sent!");
         }

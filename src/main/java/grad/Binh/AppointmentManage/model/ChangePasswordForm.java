@@ -15,7 +15,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldsMatches(field = "password", matchingField = "matchingPassword")
-@CurrentPasswordMatches()
+@CurrentPasswordMatches
 public class ChangePasswordForm {
     @NotNull
     private int id;
@@ -27,7 +27,6 @@ public class ChangePasswordForm {
     @Size(min = 5, max = 10, message = "Password should have 5-15 letters")
     @NotBlank()
     private String matchingPassword;
-
     private String currentPassword;
 
     public ChangePasswordForm(int id) {

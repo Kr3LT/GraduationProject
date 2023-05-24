@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = CurrentPasswordMatchesValidator.class)
 public @interface CurrentPasswordMatches {
-    String messages() default "Current Password Wrong";
+    String message() default "Current Password Wrong";
 
-    Class<?>[] group() default {};
+    Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};}

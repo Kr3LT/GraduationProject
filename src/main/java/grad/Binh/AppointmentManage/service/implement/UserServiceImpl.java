@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @PreAuthorize("#customerId == principal.id or hasRole('ADMIN')")
     public Customer getCustomerById(int customerId) {
-        return customerRepository.getOne(customerId);
+        return customerRepository.findById(customerId).orElseThrow();
     }
 
     @Override
@@ -141,7 +141,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @PreAuthorize("#passwordChangeForm.id == principal.id")
     public void updateUserPassword(ChangePasswordForm passwordChangeForm) {
-        User user = userRepository.getOne(passwordChangeForm.getId());
+        User user = userRepository.findById(passwordChangeForm.getId()).orElseThrow();
         user.setPassword(passwordEncoder.encode(passwordChangeForm.getPassword()));
         userRepository.save(user);
     }
@@ -149,7 +149,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @PreAuthorize("#updateData.id == principal.id or hasRole('ADMIN')")
     public void updateProviderProfile(UserForm updateData) {
-        Provider provider = providerRepository.getOne(updateData.getId());
+        Provider provider = providerRepository.findById(updateData.getId()).orElseThrow();
         provider.update(updateData);
         providerRepository.save(provider);
     }
@@ -157,7 +157,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @PreAuthorize("#updateData.id == principal.id or hasRole('ADMIN')")
     public void updateRetailCustomerProfile(UserForm updateData) {
-        RetailCustomer retailCustomer = retailCustomerRepository.getOne(updateData.getId());
+        RetailCustomer retailCustomer = retailCustomerRepository.findById(updateData.getId()).orElseThrow();
         retailCustomer.update(updateData);
         retailCustomerRepository.save(retailCustomer);
 
@@ -166,7 +166,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @PreAuthorize("#updateData.id == principal.id or hasRole('ADMIN')")
     public void updateCorporateCustomerProfile(UserForm updateData) {
-        CorporateCustomer corporateCustomer = corporateCustomerRepository.getOne(updateData.getId());
+        CorporateCustomer corporateCustomer = corporateCustomerRepository.findById(updateData.getId()).orElseThrow();
         corporateCustomer.update(updateData);
         corporateCustomerRepository.save(corporateCustomer);
 

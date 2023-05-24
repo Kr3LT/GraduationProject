@@ -70,7 +70,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public File generatePdfForInvoice(int invoiceId) {
         CustomUserDetails currentUser = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Invoice invoice = invoiceRepository.getOne(invoiceId);
+        Invoice invoice = invoiceRepository.findById(invoiceId).orElseThrow();
         if (!isUserAllowedToDownloadInvoice(currentUser, invoice)) {
             throw new org.springframework.security.access.AccessDeniedException("Unauthorized");
         }
@@ -94,7 +94,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     @PreAuthorize("hasRole('ADMIN')")
     public void changeInvoiceStatusToPaid(int invoiceId) {
-        Invoice invoice = invoiceRepository.getOne(invoiceId);
+        Invoice invoice = invoiceRepository.findById(invoiceId).orElseThrow();
         invoice.setStatus("paid");
         invoiceRepository.save(invoice);
     }

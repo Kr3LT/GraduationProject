@@ -34,6 +34,5 @@ public class CurrentPasswordMatchesValidator implements ConstraintValidator<Curr
         }
         return isValid;
 
-
     }
 }

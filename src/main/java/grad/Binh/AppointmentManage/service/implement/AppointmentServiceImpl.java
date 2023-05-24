@@ -326,7 +326,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         if (appointment.getProvider().equals(user)) {
             if (!appointment.getStatus().equals(AppointmentStatus.SCHEDULED)) {
-                return "Only appoinmtents with scheduled status can be cancelled.";
+                return "Only appointments with scheduled status can be cancelled.";
             } else {
                 return null;
             }

@@ -132,8 +132,8 @@ public class CustomerController {
 
 
     @PostMapping("/update/password")
-    public String processCustomerPasswordUpate(@Valid @ModelAttribute("passwordChange") ChangePasswordForm passwordChange, BindingResult bindingResult, @AuthenticationPrincipal CustomUserDetails currentUser, RedirectAttributes redirectAttributes) {
-        if (bindingResult.hasErrors()) {
+    public String processCustomerPasswordUpdate(@Valid @ModelAttribute("passwordChange") ChangePasswordForm passwordChange, BindingResult bindingResult, @AuthenticationPrincipal CustomUserDetails currentUser, RedirectAttributes redirectAttributes) {
+       if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.passwordChange", bindingResult);
             redirectAttributes.addFlashAttribute("passwordChange", passwordChange);
             return "redirect:/customers/" + currentUser.getId();

@@ -17,7 +17,7 @@ public class ExchangeRequest extends BaseEntity{
     @Column(name = "exchange_status")
     private ExchangeStatus status;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "id_appointment_requestor")
     private Appointment requestor;
 

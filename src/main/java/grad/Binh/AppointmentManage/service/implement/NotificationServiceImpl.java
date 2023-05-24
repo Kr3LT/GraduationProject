@@ -39,7 +39,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void markAsRead(int notificationId, int userId) {
-        Notification notification = notificationRepository.getOne(notificationId);
+        Notification notification = notificationRepository.findById(notificationId).orElseThrow();
         if (notification.getUser().getId() == userId) {
             notification.setRead(true);
             notificationRepository.save(notification);
@@ -59,7 +59,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public Notification getNotificationById(int notificationId) {
-        return notificationRepository.getOne(notificationId);
+        return notificationRepository.findById(notificationId).orElseThrow();
     }
 
     @Override
@@ -81,7 +81,6 @@ public class NotificationServiceImpl implements NotificationService {
         if (sendEmail && mailingEnabled) {
             emailService.sendAppointmentFinishedNotification(appointment);
         }
-
     }
 
     @Override
@@ -131,7 +130,7 @@ public class NotificationServiceImpl implements NotificationService {
     public void newInvoice(Invoice invoice, boolean sendEmail) {
         String title = "New invoice";
         String message = "New invoice has been issued for you";
-        String url = "/invoices/" + invoice.getId();
+        String url = "/invoices/download/" + invoice.getId();
         newNotification(title, message, url, invoice.getAppointments().get(0).getCustomer());
         if (sendEmail && mailingEnabled) {
             emailService.sendInvoice(invoice);

@@ -27,20 +27,23 @@ public class ExchangeServiceImpl implements ExchangeService {
 
     @Override
     public boolean checkIfEligibleForExchange(int userId, int appointmentId) {
-        Appointment appointment = appointmentRepository.getOne(appointmentId);
-        return appointment.getStart().minusHours(24).isAfter(LocalDateTime.now()) && appointment.getStatus().equals(AppointmentStatus.SCHEDULED) && appointment.getCustomer().getId() == userId;
+        Appointment appointment = appointmentRepository.findById(appointmentId).orElseThrow();
+        return appointment.getStart().minusHours(24)
+                .isAfter(LocalDateTime.now())
+                && appointment.getStatus().equals(AppointmentStatus.SCHEDULED)
+                && appointment.getCustomer().getId() == userId;
     }
 
     @Override
     public List<Appointment> getEligibleAppointmentsForExchange(int appointmentId) {
-        Appointment appointmentToExchange = appointmentRepository.getOne(appointmentId);
+        Appointment appointmentToExchange = appointmentRepository.findById(appointmentId).orElseThrow();
         return appointmentRepository.getEligibleAppointmentsForExchange(LocalDateTime.now().plusHours(24), appointmentToExchange.getCustomer().getId(), appointmentToExchange.getProvider().getId(), appointmentToExchange.getWork().getId());
     }
 
     @Override
     public boolean checkIfExchangeIsPossible(int oldAppointmentId, int newAppointmentId, int userId) {
-        Appointment oldAppointment = appointmentRepository.getOne(oldAppointmentId);
-        Appointment newAppointment = appointmentRepository.getOne(newAppointmentId);
+        Appointment oldAppointment = appointmentRepository.findById(oldAppointmentId).orElseThrow();
+        Appointment newAppointment = appointmentRepository.findById(newAppointmentId).orElseThrow();
         if (oldAppointment.getCustomer().getId() == userId) {
             return oldAppointment.getWork().getId().equals(newAppointment.getWork().getId())
                     && oldAppointment.getProvider().getId().equals(newAppointment.getProvider().getId())
@@ -54,7 +57,7 @@ public class ExchangeServiceImpl implements ExchangeService {
 
     @Override
     public boolean acceptExchange(int exchangeId, int userId) {
-        ExchangeRequest exchangeRequest = exchangeRequestRepository.getOne(exchangeId);
+        ExchangeRequest exchangeRequest = exchangeRequestRepository.findById(exchangeId).orElseThrow();
         Appointment requestor = exchangeRequest.getRequestor();
         Appointment requested = exchangeRequest.getRequested();
         Customer tempCustomer = requestor.getCustomer();
@@ -71,7 +74,7 @@ public class ExchangeServiceImpl implements ExchangeService {
 
     @Override
     public boolean rejectExchange(int exchangeId, int userId) {
-        ExchangeRequest exchangeRequest = exchangeRequestRepository.getOne(exchangeId);
+        ExchangeRequest exchangeRequest = exchangeRequestRepository.findById(exchangeId).orElseThrow();
         Appointment requestor = exchangeRequest.getRequestor();
         exchangeRequest.setStatus(ExchangeStatus.REJECTED);
         requestor.setStatus(AppointmentStatus.SCHEDULED);
@@ -84,8 +87,8 @@ public class ExchangeServiceImpl implements ExchangeService {
     @Override
     public boolean requestExchange(int oldAppointmentId, int newAppointmentId, int userId) {
         if (checkIfExchangeIsPossible(oldAppointmentId, newAppointmentId, userId)) {
-            Appointment oldAppointment = appointmentRepository.getOne(oldAppointmentId);
-            Appointment newAppointment = appointmentRepository.getOne(newAppointmentId);
+            Appointment oldAppointment = appointmentRepository.findById(oldAppointmentId).orElseThrow();
+            Appointment newAppointment = appointmentRepository.findById(newAppointmentId).orElseThrow();
             oldAppointment.setStatus(AppointmentStatus.EXCHANGE_REQUESTED);
             appointmentRepository.save(oldAppointment);
             ExchangeRequest exchangeRequest = new ExchangeRequest(ExchangeStatus.PENDING, newAppointment,  oldAppointment);

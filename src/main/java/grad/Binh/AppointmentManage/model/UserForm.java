@@ -51,7 +51,7 @@ public class UserForm {
     @NotBlank(groups = {CreateUser.class, UpdateUser.class}, message = "Mobile phone cannot be empty")
     private String mobile;
 
-    @Size(groups = {CreateUser.class, UpdateUser.class}, min = 5, max = 30, message = "Wrong street!")
+    @Size(groups = {CreateUser.class, UpdateUser.class}, min = 5, max = 100, message = "Wrong street!")
     @NotBlank(groups = {CreateUser.class, UpdateUser.class}, message = "Street cannot be empty")
     private String street;
 
